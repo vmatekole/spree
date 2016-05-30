@@ -69,15 +69,18 @@ class Spree::Admin::ResourceController < Spree::Admin::BaseController
     end
   end
 
-  def update_positions
+  def update_positions(override_positions = nil)
+    positions = override_positions ? override_positions : params[:positions]
+    model = model_class ? model_class : Spree::Image
     ActiveRecord::Base.transaction do
-      params[:positions].each do |id, index|
-        model_class.find(id).set_list_position(index)
+      positions.each do |id, index|
+        model.where(id).first.set_list_position(index)
       end
     end
-
-    respond_to do |format|
-      format.js { render text: 'Ok' }
+    if params[:positions]
+      respond_to do |format|
+        format.js { render text: 'Ok' }
+      end
     end
   end
 

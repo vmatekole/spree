@@ -73,8 +73,8 @@ class Spree::Admin::ResourceController < Spree::Admin::BaseController
     positions = override_positions ? override_positions : params[:positions]
     model = model_class ? model_class : Spree::Image
     ActiveRecord::Base.transaction do
-      positions.each do |id, index|
-        model.where(id: id).first.set_list_position(index)
+      positions.each do |id,index|
+        model.find(id).set_list_position(index)
       end
     end
     if params[:positions]

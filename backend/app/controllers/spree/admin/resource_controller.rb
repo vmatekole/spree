@@ -74,7 +74,7 @@ class Spree::Admin::ResourceController < Spree::Admin::BaseController
     model = model_class ? model_class : Spree::Image
     ActiveRecord::Base.transaction do
       positions.each do |id, index|
-        model.where(id).first.set_list_position(index)
+        model.where(id: id).first.set_list_position(index)
       end
     end
     if params[:positions]

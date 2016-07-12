@@ -25,7 +25,9 @@ module Spree
 
           if handler.error.present?
             flash.now[:error] = handler.error
-            respond_with(@order) { |format| format.html { render :edit } } and return
+            @order.restart_checkout_flow
+            # respond_with(@order) { |format| format.html { render :edit } } and return
+            redirect_to checkout_state_path(@order.state) && return
           elsif handler.success
             flash[:success] = handler.success
           end

@@ -18,20 +18,20 @@ module Spree
     end
 
     protected
-      def apply_coupon_code
-        if params[:order] && params[:order][:coupon_code]
-          @order.coupon_code = params[:order][:coupon_code]
-          handler = PromotionHandler::Coupon.new(@order).apply
-          if handler.error.present?
-            flash.now[:error] = handler.error
-            @order.restart_checkout_flow
-            redirect_to checkout_state_path(@order.state) && return
-          elsif handler.success
-            flash[:success] = handler.success
-          end
+    def apply_coupon_code
+      if params[:order] && params[:order][:coupon_code]
+        @order.coupon_code = params[:order][:coupon_code]
+        handler = PromotionHandler::Coupon.new(@order).apply
+        if handler.error.present?
+          flash.now[:error] = handler.error
+          @order.restart_checkout_flow
+          redirect_to checkout_state_path(@order.state) && return
+        elsif handler.success
+          flash[:success] = handler.success
         end
       end
     end
+
 
     def config_locale
       Spree::Frontend::Config[:locale]
